@@ -1,23 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { OurdircDirective } from './ourdirc.directive';
-import { Dir2Directive } from './dir2.directive';
-import { MultiPipe } from './multi.pipe';
-import { UbuntuchildComponent } from './ubuntuchild.component';
-import { UbuntuchildComponent2 } from './ubuntuchild2.component';
+import { HomeComponent } from './home.component';
+import { AboutusComponent } from './aboutus.component';
+import { AccountComponent } from './account.component';
+import { ShopComponent } from './shop.component';
+import { PaymentComponent } from './payment.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    OurdircDirective,
-    Dir2Directive,
-    MultiPipe,
-    UbuntuchildComponent,
-    UbuntuchildComponent2,
+    HomeComponent,
+    AboutusComponent,
+    AccountComponent,
+    ShopComponent,
+    PaymentComponent,
   ],
-  imports: [BrowserModule],
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot([
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'about', component: AboutusComponent },
+      { path: 'account', component: AccountComponent },
+      // { path: 'shop/:id', component: ShopComponent },
+      { path: 'shop', component: ShopComponent },
+      { path: 'payment', component: PaymentComponent },
+      { path: '**', redirectTo: 'about', pathMatch: 'full' },
+    ]),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

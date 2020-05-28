@@ -1,53 +1,43 @@
 import { Component, OnChanges, OnInit, DoCheck } from '@angular/core';
-import { RecursiveAstVisitor } from '@angular/compiler/src/output/output_ast';
-import { Observable } from 'rxjs';
-
-import { UbuntuserviceService } from './ubuntuservice.service';
+import { MyserviceService } from './myservice.service';
 
 @Component({
   selector: 'app-root',
   template: `
-    <ubuntuchild1></ubuntuchild1>
-    <ubuntuchild2></ubuntuchild2>
-    <!-- <p ourdirc [visible]="true" size="5">
-      our directive
-    </p>
-    <input dir2  /> -->
-    <!-- <p>{{ name | multi: 4 }}</p>
-    <p>{{ myPromise | async }}</p>
-    <p>{{ myobs | async }}</p> -->
-    <!-- <p *ngFor="let item of myvar">{{ item.name }}</p>
-    <button (click)="create()">addstudent</button> -->
+    <h1>
+      This is the my SPA
+    </h1>
+    <a [routerLink]="['home']"> Home </a><br />
+    <a [routerLink]="['about']"> About </a><br />
+    <a [routerLink]="['account']"> Account </a><br />
+
+    <div *ngFor="let item of productlist">
+      <!-- <a [routerLink]="['shop', item.id]">{{ item.name }} </a><br /> -->
+
+      <a [routerLink]="['shop']" [queryParams]="{ id: 'getch' }"
+        >{{ item.name }} </a
+      ><br />
+    </div>
+
+    <router-outlet> </router-outlet>
+
+    <h2>this is my footer</h2>
   `,
 })
 export class AppComponent {
-  public myvar;
-
-  // constructor(private amare: UbuntuserviceService) {}
+  productlist = [
+    { id: 1, name: 'nike' },
+    { id: 3, name: 'adiddas' },
+    { id: 2, name: 'puma' },
+  ];
 
   // ngOnInit(): void {
-  //   this.myvar = this.amare.student;
-  //   console.log(this.myvar);
-  // }
-
-  // create() {
-  //   this.amare.addstudent('dani');
-  // }
-
-  // public name = 'someone';
-  // public display = true;
-  // public students = ['mrx', 'mry', 'mrz'];
-  // public myPromise = new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve('resolved');
-  //   }, 2000);
-  // });
-  // public myobs = Observable.create(function (obs) {
-  //   setTimeout(() => {
-  //     obs.next('return from observable');
-  //   }, 3000);
-  // });
-  // toggle() {
-  //   this.display = !this.display;
+  //   // this.subscription = this.service.getData().subscribe((data) => {
+  //   //   localStorage.setItem('userinfo', JSON.stringify(data));
+  //   // });
+  //   this.service.getChachedData().subscribe((data) => {
+  //     this.userdata = JSON.parse(data).results;
+  //     console.log(this.userdata);
+  //   });
   // }
 }
