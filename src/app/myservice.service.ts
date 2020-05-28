@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable, observable } from 'rxjs';
+import { CanActivate } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MyserviceService {
+export class MyserviceService implements CanActivate {
+  canActivate() {
+    return false;
+  }
   // public userinfo = {
   //   results: [
   //     {
