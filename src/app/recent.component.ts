@@ -9,7 +9,8 @@ import { MyserviceService } from './myservice.service';
     </h1>
     <hr />
 
-    <p *ngFor="let item of pendingTransaction">
+    <!-- <p *ngFor="let item of pendingTransaction | filter: 'pending'"> -->
+    <p *ngFor="let item of userTransaction | filter: 'pending'">
       data: {{ item.data }} | description: {{ item.description }} catagory:
       {{ item.catagory }} amount: {{ item.amount }} status: {{ item.status }}
     </p>
@@ -19,7 +20,8 @@ import { MyserviceService } from './myservice.service';
       Approved Transaction
     </h1>
 
-    <p *ngFor="let item of approvedTransaction">
+    <!-- <p *ngFor="let item of approvedTransaction | filter: 'approved'"> -->
+    <p *ngFor="let item of userTransaction | filter: 'approved'">
       data: {{ item.data }} | description: {{ item.description }} catagory:
       {{ item.catagory }} amount: {{ item.amount }} status: {{ item.status }}
     </p>
@@ -27,16 +29,18 @@ import { MyserviceService } from './myservice.service';
   styles: [],
 })
 export class RecentComponent implements OnInit {
+  public userTransaction: [];
   public approvedTransaction: [];
   public pendingTransaction: [];
   constructor(private service: MyserviceService) {}
 
   ngOnInit(): void {
     this.service.getRecentTransactions().subscribe((data) => {
-      this.approvedTransaction = data.filter(
-        (item) => item.status == 'approved'
-      );
-      this.pendingTransaction = data.filter((item) => item.status == 'pending');
+      this.userTransaction = data;
+      // this.approvedTransaction = data.filter(
+      //   (item) => item.status == 'approved'
+      // );
+      // this.pendingTransaction = data.filter((item) => item.status == 'pending');
     });
   }
 }

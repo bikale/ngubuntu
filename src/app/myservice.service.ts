@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, observable, of } from 'rxjs';
+import { Observable, observable, of, pipe } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { CanActivate } from '@angular/router';
 
 @Injectable({

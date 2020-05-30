@@ -10,6 +10,7 @@ import { PaymentComponent } from './payment.component';
 import { ChartComponent } from './chart.component';
 import { NotfoundComponent } from './notfound.component';
 import { OurpercentPipe } from './ourpercent.pipe';
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { OurpercentPipe } from './ourpercent.pipe';
     ChartComponent,
     NotfoundComponent,
     OurpercentPipe,
+    FilterPipe,
   ],
   imports: [
     BrowserModule,
