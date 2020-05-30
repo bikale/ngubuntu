@@ -1,22 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
   template: `
     <p>
-      Place your order
+      payment works!
     </p>
-    <input />
-    <button (click)="placeorder()">buy</button>
   `,
-  styles: [],
+  styles: [
+  ]
 })
 export class PaymentComponent implements OnInit {
-  constructor(private router: Router) {}
-  placeorder() {
-    this.router.navigate(['home']);
+
+  constructor() { }
+
+  ngOnInit(): void {
   }
 
-  ngOnInit(): void {}
 }

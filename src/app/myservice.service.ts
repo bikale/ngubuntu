@@ -1,61 +1,63 @@
 import { Injectable } from '@angular/core';
-import { Observable, observable } from 'rxjs';
+import { Observable, observable, of } from 'rxjs';
 import { CanActivate } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MyserviceService implements CanActivate {
-  canActivate() {
-    return false;
+export class MyserviceService {
+  private userDetail = {
+    _id: '1',
+    name: 'Asaad',
+    balance: '1340',
+    expenses: '160',
+    lastpayment: '20 June 2017',
+    chart: [
+      { category: 'Services', percentage: '301' },
+      { category: 'Healthcare', percentage: '30' },
+      { category: 'Restaurants', percentage: '40' },
+    ],
+  };
+  private userTransaction = [
+    {
+      _id: '1',
+      data: '17 july 2017',
+      description: 'Google Storage',
+      catagory: 'Services',
+      amount: '50',
+      status: 'pending',
+    },
+    {
+      _id: '2',
+      data: '17 july 2017',
+      description: 'Icloud Storage',
+      catagory: 'Services',
+      amount: '50',
+      status: 'pending',
+    },
+    {
+      _id: '3',
+      data: '15 july 2017',
+      description: 'amazon',
+      catagory: 'shopping',
+      amount: '100',
+      status: 'approved',
+    },
+    {
+      _id: '4',
+      data: '15 july 2017',
+      description: 'something',
+      catagory: 'shopping',
+      amount: '100',
+      status: 'approved',
+    },
+  ];
+
+  getUserDetail(): Observable<any> {
+    return of(this.userDetail); // fetch from backend
   }
-  // public userinfo = {
-  //   results: [
-  //     {
-  //       gender: 'male',
-  //       name: {
-  //         first: 'Ricky',
-  //         last: 'Grant',
-  //       },
-  //       location: {
-  //         street: {
-  //           number: 1681,
-  //           name: 'Ranchview Dr',
-  //         },
-  //         city: 'Oklahoma City',
-  //         state: 'Alabama',
-  //         country: 'United States',
-  //         postcode: 43719,
-  //         coordinates: {
-  //           latitude: '80.3503',
-  //           longitude: '-75.9276',
-  //         },
-  //       },
-  //       email: 'ricky.grant@example.com',
-  //       dob: {
-  //         date: '1961-11-14T03:17:43.329Z',
-  //         age: 59,
-  //       },
-  //       phone: '(335)-827-7611',
-  //       cell: '(411)-558-2011',
-  //       picture: {
-  //         large: 'https://randomuser.me/api/portraits/men/29.jpg',
-  //         medium: 'https://randomuser.me/api/portraits/med/men/29.jpg',
-  //         thumbnail: 'https://randomuser.me/api/portraits/thumb/men/29.jpg',
-  //       },
-  //       nat: 'US',
-  //     },
-  //   ],
-  // };
-  // getData(): Observable<any> {
-  //   return new Observable((obs) => {
-  //     obs.next(this.userinfo);
-  //   });
-  // }
-  // getChachedData(): Observable<any> {
-  //   return new Observable((obs) => {
-  //     let mydata = localStorage.getItem('userinfo');
-  //     obs.next(mydata);
-  //   });
-  // }
+
+  getRecentTransactions(): Observable<any> {
+    return of(this.userTransaction);
+  }
 }
