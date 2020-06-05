@@ -1,53 +1,74 @@
 import { Component, OnChanges, OnInit, DoCheck } from '@angular/core';
-import { RecursiveAstVisitor } from '@angular/compiler/src/output/output_ast';
-import { Observable } from 'rxjs';
-
-import { UbuntuserviceService } from './ubuntuservice.service';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   template: `
-    <ubuntuchild1></ubuntuchild1>
-    <ubuntuchild2></ubuntuchild2>
-    <!-- <p ourdirc [visible]="true" size="5">
-      our directive
-    </p>
-    <input dir2  /> -->
-    <!-- <p>{{ name | multi: 4 }}</p>
-    <p>{{ myPromise | async }}</p>
-    <p>{{ myobs | async }}</p> -->
-    <!-- <p *ngFor="let item of myvar">{{ item.name }}</p>
-    <button (click)="create()">addstudent</button> -->
+    <h1>
+      Ubuntu
+    </h1>
+
+    <form [formGroup]="myform" (ngSubmit)="onsubmit()">
+      <input formControlName="name" /> <br />
+      <input formControlName="email" />
+      <p *ngIf="myform.get('email').invalid">invalid email</p>
+      <br />
+      <textarea formControlName="message" #msg></textarea><br />
+      <p>{{ 100 - messageCounter }}</p>
+      <!-- <input [formControl]="myform.get('email')" /> -->
+
+      <span>{{ 100 - msg.value.length }}</span>
+      <button type="submit" [disabled]="myform.invalid">submit</button>
+    </form>
+
+    <!-- <a [routerLink]="['courslist']">DisplayCourses</a>
+    <router-outlet> </router-outlet> -->
   `,
 })
-export class AppComponent {
-  public myvar;
+export class AppComponent implements OnInit {
+  public myform;
+  public messageCounter = 0;
+  constructor(private fb: FormBuilder) {
+    this.myform = fb.group({
+      name: [
+        'mr x',
+        Validators.compose([Validators.required, this.nameValidator]),
+      ],
+      email: [
+        'example@gmail.com',
+        Validators.compose([Validators.email, Validators.required]),
+      ],
+      message: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(100),
+          this.charCounter,
+        ]),
+      ],
+    });
+  }
+  nameValidator(control: FormControl) {
+    if (control.value.trim().includes(' ')) {
+      return null;
+    }
+    return { invalid: true };
+  }
 
-  // constructor(private amare: UbuntuserviceService) {}
+  ngOnInit(): void {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    //
 
-  // ngOnInit(): void {
-  //   this.myvar = this.amare.student;
-  //   console.log(this.myvar);
-  // }
+    this.myform.patchValue({ message: 'amex@gmail.com' });
+  }
 
-  // create() {
-  //   this.amare.addstudent('dani');
-  // }
-
-  // public name = 'someone';
-  // public display = true;
-  // public students = ['mrx', 'mry', 'mrz'];
-  // public myPromise = new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve('resolved');
-  //   }, 2000);
-  // });
-  // public myobs = Observable.create(function (obs) {
-  //   setTimeout(() => {
-  //     obs.next('return from observable');
-  //   }, 3000);
-  // });
-  // toggle() {
-  //   this.display = !this.display;
-  // }
+  charCounter = (control: FormControl) => {
+    console.log(control.value.length);
+    this.messageCounter = control.value.length;
+    return null;
+  };
+  onsubmit() {
+    console.log(this.myform.value);
+  }
 }

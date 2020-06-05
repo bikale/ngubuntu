@@ -1,23 +1,29 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { OurdircDirective } from './ourdirc.directive';
-import { Dir2Directive } from './dir2.directive';
-import { MultiPipe } from './multi.pipe';
-import { UbuntuchildComponent } from './ubuntuchild.component';
-import { UbuntuchildComponent2 } from './ubuntuchild2.component';
+import { FeaturedModule } from './featured/featured.module';
+import { ChildComponent } from './featured/child.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    OurdircDirective,
-    Dir2Directive,
-    MultiPipe,
-    UbuntuchildComponent,
-    UbuntuchildComponent2,
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    RouterModule.forRoot([
+      {
+        path: 'courslist',
+        loadChildren: () =>
+          import('./featured/featured.module').then(
+            (module) => module.FeaturedModule
+          ),
+      },
+    ]),
   ],
-  imports: [BrowserModule],
   providers: [],
   bootstrap: [AppComponent],
 })
