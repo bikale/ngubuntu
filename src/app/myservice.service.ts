@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import { of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyserviceService {
-  public courseList = ['angular', 'react', 'nodejs'];
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
-
-  getlist() {
-    return of(this.courseList);
+  getcourses() {
+    return this.http.get('http://localhost:3000/api/course/courselist');
   }
 }
