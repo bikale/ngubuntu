@@ -1,0 +1,4 @@
+POST http://localhost:5000/addcourse
+Content-Type: application/json
+body:{"name":"bikale"}
+

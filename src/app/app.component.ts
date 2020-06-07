@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnInit, DoCheck } from '@angular/core';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { MyserviceService } from './myservice.service';
 
 @Component({
   selector: 'app-root',
@@ -8,67 +9,26 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
       Ubuntu
     </h1>
 
-    <form [formGroup]="myform" (ngSubmit)="onsubmit()">
-      <input formControlName="name" /> <br />
-      <input formControlName="email" />
-      <p *ngIf="myform.get('email').invalid">invalid email</p>
-      <br />
-      <textarea formControlName="message" #msg></textarea><br />
-      <p>{{ 100 - messageCounter }}</p>
-      <!-- <input [formControl]="myform.get('email')" /> -->
+    <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
+    <div *ngFor="let item of courses$">
+      <p>name: {{ item.name }} || Code : {{ item.code }}</p>
+      <p *ngFor="let key of item.topics">
+        {{ key }}
+      </p>
+      <a [routerLink]="['editcourse']" [state]="{ data: item }">Edit </a>
+    </div>
 
-      <span>{{ 100 - msg.value.length }}</span>
-      <button type="submit" [disabled]="myform.invalid">submit</button>
-    </form>
-
-    <!-- <a [routerLink]="['courslist']">DisplayCourses</a>
-    <router-outlet> </router-outlet> -->
+    <router-outlet></router-outlet>
   `,
 })
 export class AppComponent implements OnInit {
-  public myform;
-  public messageCounter = 0;
-  constructor(private fb: FormBuilder) {
-    this.myform = fb.group({
-      name: [
-        'mr x',
-        Validators.compose([Validators.required, this.nameValidator]),
-      ],
-      email: [
-        'example@gmail.com',
-        Validators.compose([Validators.email, Validators.required]),
-      ],
-      message: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(100),
-          this.charCounter,
-        ]),
-      ],
-    });
-  }
-  nameValidator(control: FormControl) {
-    if (control.value.trim().includes(' ')) {
-      return null;
-    }
-    return { invalid: true };
-  }
+  public courses$ = [];
+  constructor(private service: MyserviceService) {}
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    //
-
-    this.myform.patchValue({ message: 'amex@gmail.com' });
-  }
-
-  charCounter = (control: FormControl) => {
-    console.log(control.value.length);
-    this.messageCounter = control.value.length;
-    return null;
-  };
-  onsubmit() {
-    console.log(this.myform.value);
+    this.service.getcourses().subscribe((courses) => {
+      console.log(courses);
+      this.courses$ = courses['data']; // courses.data
+    });
   }
 }
