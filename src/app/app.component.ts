@@ -8,6 +8,8 @@ import { MyserviceService } from './myservice.service';
     <h1>
       Ubuntu
     </h1>
+
+    <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
     <div *ngFor="let item of courses$">
       <p>name: {{ item.name }} || Code : {{ item.code }}</p>
       <p *ngFor="let key of item.topics">

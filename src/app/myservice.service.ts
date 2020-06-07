@@ -11,4 +11,11 @@ export class MyserviceService {
   getcourses() {
     return this.http.get('http://localhost:3000/api/course/courselist');
   }
+
+  updateCourse(coursedata, id) {
+    return this.http.patch('http://localhost:3000/api/course/editcourse', {
+      coursedata,
+      id,
+    });
+  }
 }

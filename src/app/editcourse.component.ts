@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
+import { MyserviceService } from './myservice.service';
 
 @Component({
   selector: 'app-editcourse',
@@ -9,7 +10,8 @@ import { FormBuilder } from '@angular/forms';
       <input type="text" formControlName="name" />
       <br />
       <input type="text" formControlName="code" />
-      <button type="submit">Submit</button>
+
+      <button mat-raised-button color="primary">Submit</button>
     </form>
   `,
   styles: [],
@@ -17,7 +19,11 @@ import { FormBuilder } from '@angular/forms';
 export class EditcourseComponent implements OnInit {
   public courseinfo;
   public editForm;
-  constructor(private router: Router, private fb: FormBuilder) {
+  constructor(
+    private router: Router,
+    private fb: FormBuilder,
+    private service: MyserviceService
+  ) {
     this.courseinfo = this.router.getCurrentNavigation().extras.state.data;
 
     this.editForm = this.fb.group({
@@ -27,8 +33,13 @@ export class EditcourseComponent implements OnInit {
   }
 
   onUpdateCourse() {
-    console.log(this.editForm.value);
-    console.log(this.courseinfo._id, 'idddddddd');
+    this.service
+      .updateCourse(this.editForm.value, this.courseinfo._id)
+      .subscribe((data) => {
+        setTimeout(() => {
+          this.router.navigateByUrl('');
+        }, 2000);
+      });
   }
   ngOnInit(): void {}
 }
