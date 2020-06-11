@@ -3,18 +3,21 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const app = express();
 
-const courseRoute = require("./route/course");
+const carRoute = require("./route/cars");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(courseRoute);
+app.use(carRoute);
 
-mongoose.connect("mongodb://localhost:27017/courseapi", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-app.listen(5000, () => {
-  console.log("server is running.....");
-});
+mongoose
+  .connect("mongodb://localhost:27017/carapi", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then((data) => {
+    console.log("DB connected.....");
+    app.listen(3000, () => {
+      console.log("server is running.....");
+    });
+  });
