@@ -9,26 +9,7 @@ import { MyserviceService } from './myservice.service';
       Ubuntu
     </h1>
 
-    <mat-slider min="1" max="100" step="1" value="1"></mat-slider>
-    <div *ngFor="let item of courses$">
-      <p>name: {{ item.name }} || Code : {{ item.code }}</p>
-      <p *ngFor="let key of item.topics">
-        {{ key }}
-      </p>
-      <a [routerLink]="['editcourse']" [state]="{ data: item }">Edit </a>
-    </div>
-
     <router-outlet></router-outlet>
   `,
 })
-export class AppComponent implements OnInit {
-  public courses$ = [];
-  constructor(private service: MyserviceService) {}
-
-  ngOnInit(): void {
-    this.service.getcourses().subscribe((courses) => {
-      console.log(courses);
-      this.courses$ = courses['data']; // courses.data
-    });
-  }
-}
+export class AppComponent {}

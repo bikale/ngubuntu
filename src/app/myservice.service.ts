@@ -7,15 +7,27 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MyserviceService {
   constructor(private http: HttpClient) {}
-
-  getcourses() {
-    return this.http.get('http://localhost:3000/api/course/courselist');
+  private token: null;
+  loginAuth(email, password) {
+    return this.http.post('http://localhost:3000/login', {
+      email: email,
+      password: password,
+    });
   }
 
-  updateCourse(coursedata, id) {
-    return this.http.patch('http://localhost:3000/api/course/editcourse', {
-      coursedata,
-      id,
+  getToken() {
+    return of(this.token);
+  }
+
+  setToken(usertoken) {
+    this.token = usertoken;
+  }
+
+  getCars() {
+    return this.http.get('http://localhost:3000/cars', {
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+      },
     });
   }
 }

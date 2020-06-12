@@ -5,24 +5,28 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { EditcourseComponent } from './editcourse.component';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
+import { CarsComponent } from './cars.component';
+import { LoginComponent } from './login.component';
 
 @NgModule({
-  declarations: [AppComponent, EditcourseComponent],
+  declarations: [AppComponent, CarsComponent, LoginComponent],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RouterModule.forRoot([
-      { path: 'editcourse', component: EditcourseComponent },
-    ]),
     MatButtonModule,
     BrowserAnimationsModule,
     MatSliderModule,
+    RouterModule.forRoot([
+      { path: '', component: LoginComponent },
+
+      { path: 'cars', component: CarsComponent },
+    ]),
   ],
   providers: [],
   bootstrap: [AppComponent],

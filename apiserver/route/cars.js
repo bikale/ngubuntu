@@ -7,8 +7,10 @@ const ObjectId = require("mongodb").ObjectID;
 // const carController = require("../controller/car");
 
 const protect = async (req, res, next) => {
-  console.log(req.headers);
-  let token = req.headers.authorization.split(" ")[1]; //Bearer dhdhdhdh
+  let token;
+  if (req.headers.authorization) {
+    token = req.headers.authorization.split(" ")[1]; //Bearer dhdhdhdh
+  }
   if (!token) {
     return res.json({
       status: "error",
@@ -49,20 +51,65 @@ route.post("/cars", protect, authorize("admin"), async (req, res, next) => {
       mileage: req.body.mileage,
       rate: req.body.rate,
       available: req.body.available,
-      rental_records: [
-        {
-          reservation_id: new ObjectId(),
-          driver_license: req.body.rental_records.driver_license,
-          start_date: new Date(),
-          return_date: "",
-        },
-      ],
+      rental_records: [],
     });
     res.status(201).json({ status: "Ok", data: "Successfully created" });
   } catch (error) {
     res.status(400).json({ status: "error", data: error.message });
   }
 });
+
+// reserve car
+route.post("/cars/:car_id", async (req, res, next) => {
+  try {
+    const reserveId = new ObjectId();
+    await Cars.updateOne(
+      { _id: req.params.car_id },
+      {
+        $push: {
+          rental_records: {
+            reservation_id: reserveId,
+            driver_license: req.body.driver_license,
+            start_date: new Date(),
+            return_date: "",
+          },
+        },
+      }
+    );
+    res.status(201).json({ status: "ok", reservation_id: reserveId });
+  } catch (error) {}
+});
+
+route.patch("/cars/:car_id/returncar/:reserve_id", async (req, res, next) => {
+  await Cars.updateOne(
+    {
+      _id: req.params.car_id,
+      "rental_records.reservation_id": req.params.reserve_id,
+    },
+    {
+      "rental_records.$.return_date": req.body.return_date,
+    }
+  );
+  res.json({ status: "ok", data: "the car is returned" });
+});
+
+route.delete(
+  "/cars/:car_id/rentaldetail/:reserve_id",
+  async (req, res, next) => {
+    try {
+      await Cars.updateOne(
+        {
+          _id: req.params.car_id,
+          "rental_records.reservation_id": req.params.reserve_id,
+        },
+        {
+          $unset: { "rental_records.$": 12 },
+        }
+      );
+      res.json({ status: "ok", data: "the car detail is deleted" });
+    } catch (error) {}
+  }
+);
 
 route.post("/signup", async (req, res, next) => {
   const { email, password } = req.body;
