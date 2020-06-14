@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
+import { of, from, merge } from 'rxjs';
+import { map, debounceTime, flatMap, mergeAll } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -62,14 +62,26 @@ export class MyserviceService {
   }
 
   getTransaction() {
-    // return this.http.get('api/recent')
-    let approved = this.userTransaction.filter(
-      (item) => item.status == 'approved'
+    // // return this.http.get('api/recent')
+    // let approved = this.userTransaction.filter(
+    //   (item) => item.status == 'approved'
+    // );
+    // let pending = this.userTransaction.filter(
+    //   (item) => item.status == 'pending'
+    // );
+    let result = { approved: [], pending: [] };
+    return of(this.userTransaction).pipe(
+      map((res) => {
+        res.map((data) => {
+          if (data.status == 'approved') {
+            result.approved.push(data);
+          } else {
+            result.pending.push(data);
+          }
+        });
+        return result;
+      })
     );
-    let pending = this.userTransaction.filter(
-      (item) => item.status == 'pending'
-    );
-    return of({ approved: approved, pending: pending });
   }
 
   transactionDetail(id) {
@@ -80,6 +92,7 @@ export class MyserviceService {
 
   checkAccountNum(accnum) {
     //return http.get('api/accountnumb/accnum')
-    return of({ valid: true }).pipe(debounceTime(2000));
+
+    return of({ valid: true });
   }
 }

@@ -38,6 +38,7 @@ export class RecentComponent implements OnInit {
   ngOnInit(): void {
     this.service.getTransaction().subscribe((data) => {
       console.log(data);
+
       this.pendingStatus = data.pending;
       this.approvedStatus = data.approved;
     });
