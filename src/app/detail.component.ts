@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MyserviceService } from './myservice.service';
+import { of } from 'rxjs';
+import { map, flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-detail',
@@ -23,13 +25,17 @@ export class DetailComponent implements OnInit {
     private route: ActivatedRoute,
     private service: MyserviceService
   ) {
-    this.route.params.subscribe((data) => {
-      this.id = data['id'];
-
-      this.service.transactionDetail(this.id).subscribe((data) => {
+    // this.route.params.subscribe((data) => {
+    //   this.id = data['id'];
+    //   this.service.transactionDetail(this.id).subscribe((data) => {
+    //     this.transactionDetail = data;
+    //   });
+    // });
+    this.route.params
+      .pipe(flatMap((data) => this.service.transactionDetail(data['id'])))
+      .subscribe((data) => {
         this.transactionDetail = data;
       });
-    });
   }
 
   ngOnInit(): void {}
