@@ -1,5 +1,10 @@
 import { Component, OnChanges, OnInit, DoCheck } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormControl,
+  FormArray,
+} from '@angular/forms';
 import { MyserviceService } from './myservice.service';
 
 @Component({
@@ -8,8 +13,10 @@ import { MyserviceService } from './myservice.service';
     <h1>
       Ubuntu
     </h1>
-
-    <router-outlet></router-outlet>
+    <a [routerLink]="['']">Home</a> ||
+    <a [routerLink]="['recent']">Recent</a> ||
+    <a [routerLink]="['payment']">Payment</a>
+    <router-outlet> </router-outlet>
   `,
 })
 export class AppComponent {}
